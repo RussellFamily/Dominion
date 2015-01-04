@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:card.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:card.h">
+   </FileRef>
+   <FileRef
+      location = "group:deck.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:deck.h">
+   </FileRef>
+   <FileRef
+      location = "group:pile.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:pile.h">
+   </FileRef>
+   <FileRef
+      location = "group:Player.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:Player.h">
+   </FileRef>
+   <FileRef
+      location = "group:game.cpp">
+   </FileRef>
+   <FileRef
+      location = "group:game.h">
+   </FileRef>
+   <FileRef
+      location = "group:main.cpp">
+   </FileRef>
+</Workspace>

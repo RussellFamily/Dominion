@@ -1,0 +1,17 @@
+1 	Copper 		0 	0 	1 	Treas 	None 	None
+2 	Silver 		3 	0 	2 	Treas 	None 	None
+3	Gold__		6	0	3	Treas	None	None
+4	Estate		2	1	0	Vict	None	None
+5	Duchy_		5	3	0	Vict	None	None
+6	Province	8	6	0	Vict	None	None
+7	Curse_		0	-1	0	Curse	None	None
+8	Cellar		2	0	0	Action	None	+1 Action. Discard any number of cards. +1 card per card discarded.
+9	Festival	5	0	0	Action	None	+2 Actions; +1 Buy; +$2
+10	Gardens		4	0	0	Vict	None	Worth 1 Victory for every 10 cards in your deck (rounded down)
+11	Laboratory	5	0	0	Action	None	+2 Cards; +1 Action
+12 	Market		5	0	0	Action	None	+1 Card; +1 Action; +1 Buy; +$1
+13	Militia		4	0	0	Action	Attack	+$2; Each other player discards down to 3 cards in his hand.
+14	Smithy		4	0	0	Action	None	+3 Cards
+15 	Throne_Room	4	0	0	Action	None	Choose an Action card in your hand. Play it twice.
+16	Village		3	0	0	Action	None	+1 Card; +2 Actions
+17	Woodcutter	3	0	0	Action	None	+$2; +1 Buy
