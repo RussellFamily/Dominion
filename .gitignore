@@ -1,2 +1,4 @@
 *.app
 *.pyc
+*.pynb
+.DS_Store
