@@ -1,0 +1,8 @@
+Begin event handler chain
+find where it was clicked
+determine if the location clicked affects the function
+if it does, do said action
+
+
+see if there is a windowed event
+only look for window click events
