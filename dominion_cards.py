@@ -1,3 +1,6 @@
+
+import copy
+
 #########################
 ######## CLASSES ########
 #########################
@@ -6,76 +9,100 @@
 # Player Class
 #########################
 
+# TODO write code to handle locations of cards in handle
+# It should also reset these values when card is drawn
+# or when they draw a whole new hand
+
+
 class Player():
 
-	def __init__(self,game,AI=False):
+	def __init__(self, game, AI=False):
 
-		self.name="Player"
-		self.discard=[]
-		self.hand=[]
-		self.inplay=[]
-		self.actions=0
-		self.buys=0
-		self.game=game
-		self.deck=self.newdeck()
+		self.name = "Player"
+		self.discard = []
+		self.hand = []
+		self.inplay = []
+		self.actions = 0
+		self.buys = 0
+		self.game = game
+		self.deck = self.newdeck()
 		self.shuffledeck(self.deck)
-		self.xloc=0
-		self.yloc=0
-		self.buyingpower=0
-		self.nextplayer=None
-		self.points=0
-		self.selected=[]
-		self.toselect=False
-	#creates a new deck with 7 coppers and 3 estates
+		self.xloc = 0
+		self.yloc = 0
+		self.buyingpower = 0
+		self.nextplayer = None
+		self.points = 0
+		self.selected = []
+		self.toselect = False
+	# creates a new deck with 7 coppers and 3 estates
+
 	def newdeck(self):
-		newlist=[]
+		newlist = []
 		for i in range(7):
-			newlist.append(self.game.availablecards["copper"])
+			newlist.append(self.game.cardpiledict["copper"].gaincard())
 		for i in range(3):
-			newlist.append(self.game.availablecards["estate"])
+			newlist.append(self.game.cardpiledict["estate"].gaincard())
 		return newlist
 
-	#shuffles deck
-	def shuffledeck(self,deck):
+	# shuffles deck
+	def shuffledeck(self):
 		shuffle(self.deck)
 
-	def drawcard(self,game):
+	def drawcard(self):
 		if len(self.deck) == 0:
-			if len(self.discard)==0:
+			if len(self.discard) == 0:
 				return
 			else:
 				for card in self.discard:
 					self.deck.append(card)
 
-				self.discard=[]
-		i=len(self.hand)
-		#game.animate((1020,680),(5+i*74+i*5,680),self.deck[0])
+				self.discard = []
+		i = len(self.hand)
 		self.hand.append(self.deck.pop(0))
 
+	def playcard(self, card):
 
 
 #########################
 # Card Pile Class
 #########################
 
+
 class CardPile(object):
 
     def __init__(self, card, numplayers):
-        self.cardtype=card
-        self.numcards=self.get_numcards(numplayers)
+        self.cardtype = card
+        self.numcards = self.get_numcards(numplayers)
         self.location = None
 
-    def get_numcards(self,numplayers):
+    def get_numcards(self, numplayers):
 
-        if self.cardtype.type1 == 'Victory' or self.cardtype.type2 == 'Victory':
+		if self.cardtype.cardname == 'Estate':
+			if numplayers == 2:
+				return 8 + numplayers * 3
+            elif numplayers == 3 or numplayers == 4:
+                return 12 + numplayers * 3
+            else:
+                return 0 + numplayers * 3
+		elif self.cardtype.type1 == 'Victory' or self.cardtype.type2 == 'Victory':
             if numplayers == 2:
                 return 8
             elif numplayers == 3 or numplayers == 4:
                 return 12
             else:
                 return 4
+		elif self.cardtype.cardname == 'Copper':
+			return 50
+		elif self.cardtype.cardname == 'Silver':
+			return 30
+		elif self.cardtype.cardname == 'Gold':
+			return 20
         else:
             return 10
+
+	def gain_card(self):
+		self.numcards -= 1
+		return copy.deepcopy(self.cardtype)
 
 
 #########################
@@ -85,16 +112,17 @@ class CardPile(object):
 class Card(object):
 
 	def __init__(self):
-		self.name=None
-		self.type1=None
-		self.type2=None
-		self.imageloc=None
-		self.card_cost=0
-		self.coins=0
-		self.victory_points=0
-		self.image=None
-		self.reducedimage=None
-
+		self.name = None
+		self.type1 = None
+		self.type2 = None
+		self.imageloc = None
+		self.card_cost = 0
+		self.coins = 0
+		self.victory_points = 0
+		self.image = None
+		self.reducedimage = None
+		self.location = 0
+		self.width
     def
 
 	# This function will be overwritten
@@ -105,7 +133,7 @@ class Card(object):
 	def score_card(self):
 		pass
 
-    #TODO Dynamically resize the images based on screen size
+    # TODO Dynamically resize the images based on screen size
 	def set_image_loc(self):
 		self.imageloc=name+".jpg"
 		self.image=pygame.image.load(self.imageloc).convert()

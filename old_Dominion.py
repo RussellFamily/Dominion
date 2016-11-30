@@ -7,7 +7,7 @@ from math import sqrt, atan, tan, sin, cos, fabs, floor
 pygame.init()
 #################################################################################
 class Button():
-	
+
 	def __init__(self,game,text):
 		self.text=text
 		self.box=pygame.Surface((80,20))
@@ -22,9 +22,9 @@ class Button():
 
 ################################################################################
 class Player():
-	
+
 	def __init__(self,game,AI=False):
-		
+
 		self.name="Player"
 		self.discard=[]
 		self.hand=[]
@@ -41,7 +41,7 @@ class Player():
 		self.points=0
 		self.selected=[]
 		self.toselect=False
-	#creates a new deck with 7 coppers and 3 estates	
+	#creates a new deck with 7 coppers and 3 estates
 	def newdeck(self):
 		newlist=[]
 		for i in range(7):
@@ -49,11 +49,11 @@ class Player():
 		for i in range(3):
 			newlist.append(self.game.availablecards["estate"])
 		return newlist
-		
-	#shuffles deck	
+
+	#shuffles deck
 	def shuffledeck(self,deck):
 		shuffle(self.deck)
-		
+
 	def drawcard(self,game):
 		if len(self.deck) == 0:
 			if len(self.discard)==0:
@@ -61,19 +61,19 @@ class Player():
 			else:
 				for card in self.discard:
 					self.deck.append(card)
-					
+
 				self.discard=[]
 		i=len(self.hand)
 		#game.animate((1020,680),(5+i*74+i*5,680),self.deck[0])
 		self.hand.append(self.deck.pop(0))
-		
-		
-	
+
+
+
 ################################################################################
 
 
 class Card():
-	
+
 	def __init__(self,name,type1,type2,cost,money,points):
 		self.name=name
 		self.type1=type1
@@ -85,17 +85,17 @@ class Card():
 		self.points=points
 		self.image= pygame.image.load(self.imageloc).convert()
 		self.reducedimage=pygame.transform.scale(self.image,(74,118))
-		
+
 
 ################################################################################
 
 
 
 
-		
+
 
 class Game():
-	
+
 	def __init__(self):
 		self.emptypiles=0
 		self.screensize=(1200,800)
@@ -155,10 +155,10 @@ class Game():
 			"province":8,
 			"curse":10
 		}
-		
-		
-		
-		
+
+
+
+
 		self.toprow=[copper,silver,gold,estate,duchy,province,curse]
 		self.midrow=[card1,card2,card3,card4,card5]
 		self.botrow=[card6,card7,card8,card9,card10]
@@ -176,7 +176,7 @@ class Game():
 		for i in range(len(self.midrow)):
 			self.midrow[i].xloc=5+i*74+i*5
 			self.midrow[i].yloc=5+30+118
-			
+
 		for i in range(len(self.botrow)):
 			self.botrow[i].xloc=5+i*74+i*5
 			self.botrow[i].yloc=5+60+118*2
@@ -198,83 +198,83 @@ class Game():
 		self.textarrayappend("Welcome to Dominion!")
 		self.textarrayappend("Left click to play a card from hand, purchase a card, or go to next phase.")
 		self.textarrayappend("Right click to view full card image from supply piles.")
-		
+
 		for i in range(5):
 			for player in self.players:
 				player.drawcard(self)
-		
-		
-		
-		
+
+
+
+
 	def playgame(self):
-		
-		
-		
+
+
+
 		while self.endgame==False:
-			
+
 			self.playertext=self.my_font.render(self.currentplayer.name+"'s Turn",True,(255,255,255))
-			
+
 			#print (self.currentplayer.name+"'s Turn!")
 			self.textarrayappend(self.currentplayer.name+"'s Turn!")
 			actionphase=True
 			buyphase=True
 			#for i in range(5):
 			#	self.currentplayer.drawcard(self)
-				
+
 			#ACTIONN
-			
+
 			self.currentplayer.buys=1
 			self.currentplayer.actions=1
 			self.currentplayer.buyingpower=0
-			
+
 			self.phasetext=self.my_font.render("Action Phase",True,(255,255,255))
 			self.textarrayappend("Action Phase")
 			#print "Action Phase"
 			for card in self.currentplayer.hand:
-								
+
 				if card.type1=="Action":
 					break
 			else:
-								
+
 				actionphase==False
 				self.phasetext=self.my_font.render("Buy Phase",True,(255,255,255))
 			self.blitscreen()
 			while actionphase==True:
 				for event in pygame.event.get():
-					
+
 					if event.type == QUIT:
 						exit()
 					elif event.type==KEYDOWN:
 						if event.key==K_ESCAPE:
 							exit()
 					elif event.type	==MOUSEBUTTONDOWN:
-						
+
 						if Rect(1000,400,80,20).collidepoint(event.pos):
 							actionphase=False
-												
-						
-						
-						
+
+
+
+
 						for card in self.availablecards:
-							 
-							
+
+
 							testRect=Rect(self.availablecards[card].xloc,self.availablecards[card].yloc,74,118)
 							if testRect.collidepoint(event.pos):
 							#if self.availablecards[card].reducedimage.get_rect().collidepoint(event.pos):
 								if event.button ==3:
-									
+
 									self.blitscreen()
 									self.blitcard(self.availablecards[card])
 									self.currentcard=self.availablecards[card]
 									break
-								
+
 						for i in range(len(self.currentplayer.hand)):
 							temphand=self.currentplayer.hand
 							testRect=Rect(5+i*74+i*5,800-140,74,118)
 							if testRect.collidepoint(event.pos):
 							#if self.availablecards[card].reducedimage.get_rect().collidepoint(event.pos):
 								if event.button ==3:
-									
+
 									self.blitscreen()
 									self.blitcard(temphand[i])
 									self.currentcard=temphand[i]
@@ -287,30 +287,30 @@ class Game():
 										cardplayed.function(self,self.currentplayer)
 										self.currentplayer.actions-=1
 										#print self.currentplayer.name,"plays a",cardplayed.name
-										
-										
+
+
 										self.blitscreen()
-										
+
 										break
-							
+
 					else:
 						self.blitscreen()
-				
+
 				for card in self.currentplayer.hand:
-					
+
 					if card.type1=="Action":
 						break
 				else:
-					
+
 					self.currentplayer.actions=0
-						
+
 				if self.currentplayer.actions == 0:
 					actionphase=False
-					
-					
+
+
 			for card in self.currentplayer.hand:
 				self.currentplayer.buyingpower+=card.money
-			
+
 			self.phasetext=self.my_font.render("Buy Phase",True,(255,255,255))
 			self.textarray.append("Buy Phase")
 			self.blitscreen()
@@ -320,26 +320,26 @@ class Game():
 			#self.textarray.append("Buy Phase")
 			while buyphase ==True:
 				for event in pygame.event.get():
-					
+
 					if event.type == QUIT:
 						exit()
 					elif event.type==KEYDOWN:
 						if event.key==K_ESCAPE:
 							exit()
 					elif event.type	==MOUSEBUTTONDOWN:
-						
+
 						if Rect(1000,400,80,20).collidepoint(event.pos):
 							buyphase=False
-						
-						
+
+
 						for card in self.availablecards:
-							
-							
+
+
 							testRect=Rect(self.availablecards[card].xloc,self.availablecards[card].yloc,74,118)
 							if testRect.collidepoint(event.pos):
-								
+
 								if event.button ==3:
-									 
+
 									self.blitscreen()
 									self.blitcard(self.availablecards[card])
 									break
@@ -357,36 +357,36 @@ class Game():
 									self.blitscreen()
 					else:
 						self.blitscreen()
-		
+
 				if self.currentplayer.buys == 0:
 					buyphase=False
-					
-					
-					
-					
-					
+
+
+
+
+
 			for card in self.currentplayer.inplay:
 				self.currentplayer.discard.append(card)
 			for card in self.currentplayer.hand:
 				self.currentplayer.discard.append(card)
 			self.currentplayer.inplay[:]=[]
 			self.currentplayer.hand[:]=[]
-	
-			
+
+
 			#self.currentplayer=self.currentplayer.nextplayer
-	
+
 			if self.emptypiles ==3 or self.availablecardquantities["province"]==0:
 				self.endgame=True
 				self.score()
 				self.blitscreen()
-				
+
 			for i in range(5):
 				self.currentplayer.drawcard(self)
-				
-			
-				
+
+
+
 			self.currentplayer=self.currentplayer.nextplayer
-			
+
 	def blitscreen(self,animate=False):
 		self.screen.fill((0,0,0))
 		for i in range(len(self.toprow)):
@@ -402,18 +402,18 @@ class Game():
 			numtext=self.my_font.render(str(self.availablecardquantities[self.botrow[i].name]),True,(255,255,255))
 			self.screen.blit(numtext,(5+30+i*74+5*i,5+60+118*3))
 		for i in range(len(self.currentplayer.inplay)):			self.screen.blit(self.currentplayer.inplay[i].reducedimage,(5+i*74+i*5,460))
-			
+
 		for i in range(len(self.currentplayer.hand)):
 			if self.currentplayer.toselect==True:
 				if self.currentplayer.selected[i]==True:
 					self.screen.blit(self.currentplayer.hand[i].reducedimage,(5+i*74+i*5,640))
 				else:
 					self.screen.blit(self.currentplayer.hand[i].reducedimage,(5+i*74+i*5,680))
-			
+
 			else:
 				self.screen.blit(self.currentplayer.hand[i].reducedimage,(5+i*74+i*5,680))
 
-		
+
 		self.screen.blit(self.reduceddrawpile,(1020,680))
 		if len(self.currentplayer.discard) == 0:
 			pass
@@ -429,7 +429,7 @@ class Game():
 		self.screen.blit(self.buytext,(1000,300))
 		self.buytext=self.my_font.render("Buying Power: "+str(self.currentplayer.buyingpower),True,(255,255,255))
 		self.screen.blit(self.buytext,(1000,350))
-		
+
 		self.nextbutton.box.fill((255,0,0))
 		self.nextbutton.box.blit(self.nextbutton.textimage,(3,3))
 		self.screen.blit(self.nextbutton.box,(1000,400))
@@ -439,14 +439,14 @@ class Game():
 			textimage=self.my_font.render(">"+self.textarray[i],True,(0,0,0))
 			self.textbox.blit(textimage,(0,i*16))
 		self.screen.blit(self.textbox,(450,153))
-		
+
 		if animate == False:
 			pygame.display.update()
-		
-		
-		
-		
-		
+
+
+
+
+
 	def blitcard(self, card):
 		mx,my=pygame.mouse.get_pos()
 		if pygame.mouse.get_pos()[0]<600:
@@ -454,37 +454,37 @@ class Game():
 				self.screen.blit(card.image,(mx,my))
 			else:
 				self.screen.blit(card.image,(mx,my-473))
-		
+
 		else:
 			if pygame.mouse.get_pos()[1]<400:
 				self.screen.blit(card.image,(mx-296,my))
 			else:
 				self.screen.blit(card.image,(mx-296,my-473))
-		
-		
+
+
 		pygame.display.update()
 
 	def animate(self,origin,destination,card):
 		x,y=origin
 		desx,desy=destination
-		
+
 		disx=desx-x
 		disy=desy-y
 		angle=atan(float(disy)/disx)
 		speed=3000.0
 		vx=speed*cos(angle)
 		vy=speed*sin(angle)
-		
+
 		timecheck=fabs(float(disx)/vx)
-		
+
 		totaltime=0
 		clock=pygame.time.Clock()
 		sprite=card.reducedimage
 		isthere=False
 		while isthere==False:
 			time_passed = clock.tick()
-				
-			
+
+
 			time_passed_seconds = time_passed /1000.0
 			totaltime+=time_passed_seconds
 			xmoved=vx*time_passed_seconds
@@ -493,17 +493,17 @@ class Game():
 				x+=xmoved
 			else:
 				x-=xmoved
-			
+
 			y+=ymoved
-			
-		
+
+
 			self.blitscreen(True)
 			function=self.screen.blit(card.reducedimage,(x,y))
 			pygame.display.update()
 			#self.blitscreen(True)
 			if totaltime > timecheck:
 				isthere=True
-			
+
 	def score(self):
 		for player in self.players:
 			decksize=len(player.deck)+len(player.discard)+len(player.hand)
@@ -511,7 +511,7 @@ class Game():
 			for card in player.discard:
 				if card.points==0.1:
 					player.points+=gardenspoints
-					
+
 				else:
 					player.points+=card.points
 			for card in player.deck:
@@ -519,17 +519,17 @@ class Game():
 					player.points+=gardenspoints
 				else:
 					player.points+=card.points
-					
-			
+
+
 			self.textarrayappend(player.name+": "+ str(player.points))
 			#print player.name, str(player.points)
-			
-			
-			
-			
+
+
+
+
 		if self.players[0].points > self.players[1].points:
 			self.textarrayappend(self.players[0].name + " wins!")
-			
+
 		elif self.players[1].points > self.players[0].points:
 			self.textarrayappend(self.players[1].name + " wins!")
 		else:
@@ -544,7 +544,7 @@ class Game():
 				elif event.type==KEYDOWN:
 					if event.key==K_ESCAPE:
 						exit()
-			
+
 			pygame.display.update()
 	def textarrayappend(self,text):
 		if len(self.textarray)>14:
@@ -559,10 +559,3 @@ class Game():
 
 newgame=Game()
 newgame.playgame()
-		
-		
-		
-		
-		
-		
-		
